@@ -1,0 +1,4 @@
+owner: malagonius
+repo: fog-of-war
+provider: github
+updaterCacheDirName: fog-of-war-updater
