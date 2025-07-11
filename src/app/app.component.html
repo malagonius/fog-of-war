@@ -1,0 +1,59 @@
+<!-- File input -->
+<input type="file" accept="image/*" (change)="onFileSelected($event)" />
+
+<!-- Grid settings -->
+<div *ngIf="imageSrc" style="margin-top: 1em;">
+  <label>
+    Rows:
+    <input type="number" #rows min="1" (change)="setRows(rows.value)" value="10" />
+  </label>
+  <label>
+    Columns:
+    <input type="number" #col min="1" (change)="setCols(col.value)" value="10" />
+  </label>
+</div>
+
+<!-- Image with fog overlay -->
+<div
+  *ngIf="imageSrc"
+  class="image-container"
+  [style.width.px]="imageWidth()"
+  [style.height.px]="imageHeight()"
+>
+
+  <div class="grid-overlay">
+    <!-- Horizontal lines -->
+    <div
+      *ngFor="let row of [].constructor(gridRows()); let i = index"
+      class="grid-line horizontal"
+      [style.top.px]="i * cellHeight()"
+    ></div>
+
+    <!-- Vertical lines -->
+    <div
+      *ngFor="let col of [].constructor(gridCols()); let j = index"
+      class="grid-line vertical"
+      [style.left.px]="j * cellWidth()"
+    ></div>
+  </div>
+  <img #imageElement [src]="imageSrc" />
+
+  <!-- Fog of war layer -->
+  <div class="fog-layer">
+    <div
+      *ngFor="let row of [].constructor(gridRows()); let rowIndex = index"
+      class="fog-row"
+    >
+      <div
+        *ngFor="let col of [].constructor(gridCols()); let colIndex = index"
+          class="fog-cell"
+          [style.width.px]="cellWidth()"
+          [style.height.px]="cellHeight()"
+          [style.left.px]="colIndex * cellWidth()"
+          [style.top.px]="rowIndex * cellHeight()"
+          [class.hidden]="gridVisibility()[rowIndex][colIndex]"
+          (mouseenter)="toggleVisibility(rowIndex, colIndex,$event)"
+      ></div>
+    </div>
+  </div>
+</div>
